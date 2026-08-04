@@ -28,4 +28,8 @@ class Db {
         void Delete(const std::string& k) {
             db.erase(k);
         }
+
+        auto GetAll() const {
+            return db;
+        }
 };
