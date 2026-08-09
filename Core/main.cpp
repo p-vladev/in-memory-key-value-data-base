@@ -1,11 +1,19 @@
 #include <iostream>
-#include <map>
-#include "./Classes/Db.cpp"
-#include "./Classes/Server.cpp"
+#include <unordered_map>
+#include "./Snapshoter/Snapshoter.cpp"
+#include "./Storage/Db.cpp"
+#include <fstream>
 
-int main(){
+int main () {
+
     Db db;
-    Server server(8080);
+
+    db.Add("name", "Kris");
+    db.Add("sname", "Dreemur");
+    db.Add("age", "15");
+    db.Add("gender", "male");
+
+    Snapshoter::SaveAsJson("test");
 
     return 0;
 }

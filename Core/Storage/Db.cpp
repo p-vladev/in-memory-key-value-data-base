@@ -1,8 +1,8 @@
 #include <iostream>
 #include <unordered_map>
+#include "../global/InMemoryDb.hpp"
 
-class Db {
-    std::unordered_map<std::string, std::string> db;
+class Db : public InMemoryDb {
 
     public:
         void Add(const std::string& k) {
