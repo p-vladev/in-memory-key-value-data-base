@@ -1,36 +1,36 @@
 #include <iostream>
-#include <unordered_map>
-// #include "./Snapshoter/Snapshoter.cpp"
-// #include "./Storage/Db.cpp"
-#include "./Server/Runtime.cpp"
-#include <fstream>
-#include <thread>
+#include "./Protocol/ProtocolParser.hpp"
 
 int main () {
-    // Db db;
+    // std::string req = "SET name Kris";
+
+    // ProtocolParser prs;
+
+    // prs.Parse(req);
+
     // int p = 8080;
-    bool running = true;
+    // bool running = true;
 
-    std::thread t([&](){
-        Runtime rnt;
+    // std::thread t([&](){
+    //     Runtime rnt;
         
-        do {
-            std::string msg;
+    //     do {
+    //         std::string msg;
 
-            std::cin >> msg;
+    //         std::cin >> msg;
 
-            if (msg == "stop") {
-                rnt.Stop();
+    //         if (msg == "stop") {
+    //             rnt.Stop();
 
-                running = false;
-            }
+    //             running = false;
+    //         }
 
-            rnt.Execute(msg);
+    //         rnt.Execute(msg);
     
-        } while (running);
-    });
+    //     } while (running);
+    // });
 
-    t.join();
+    // t.join();
 
 
     // db.Add("name", "Kris");
@@ -39,6 +39,18 @@ int main () {
     // db.Add("gender", "male");
 
     // Snapshoter::SaveAsJson("test");
+
+    ProtocolParser pp;
+
+    pp.Parse("SET name Kris");
+    pp.Tokenize();
+    pp.Validate();
+    std::cout << pp.Response() << std::endl;
+
+    pp.Parse("DEL name Kris");
+    pp.Tokenize();
+    pp.Validate();
+    std::cout << pp.Response() << std::endl;
 
     return 0;
 }

@@ -1,0 +1,7 @@
+./Core/global/InMemoryDb.cpp
+./Core/Storage/Db.cpp
+./Core/Protocol/ProtocolParser.cpp
+./Core/Server/Server.cpp
+./Core/Server/Client.cpp
+./Core/Snapshoter/Snapshoter.cpp
+./Core/main.cpp

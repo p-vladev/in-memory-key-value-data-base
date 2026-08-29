@@ -1,35 +1,31 @@
 #include <iostream>
 #include <unordered_map>
-#include "../global/InMemoryDb.hpp"
+#include "Db.hpp"
 
-class Db : public InMemoryDb {
+void Db::Add(const std::string& k) {
+    db.insert({k, "null"});
+}
 
-    public:
-        void Add(const std::string& k) {
-            db.insert({k, "null"});
-        }
+void Db::Add(const std::string& k, const std::string& v) {
+    db.insert({k, v});
+}
 
-        void Add(const std::string& k, const std::string& v) {
-            db.insert({k, v});
-        }
+void Db::Update(const std::string& k, const std::string& v) {
+    db.at(k) = v;
+}
 
-        void Update(const std::string& k, const std::string& v) {
-            db.at(k) = v;
-        }
+std::string Db::GetValue(const std::string& k) {
+    return db.at(k);
+}
 
-        std::string GetValue(const std::string& k) const {
-            return db.at(k);
-        }
+bool Db::IsExist(const std::string& k) {
+    return db.find(k) == db.end() ? false : true;
+}
 
-        bool IsExist(const std::string& k) const {
-            return db.find(k) == db.end() ? false : true;
-        }
+void Db::Delete(const std::string& k) {
+    db.erase(k);
+}
 
-        void Delete(const std::string& k) {
-            db.erase(k);
-        }
-
-        auto GetAll() const {
-            return db;
-        }
-};
+auto Db::GetAll() {
+    return db;
+}
