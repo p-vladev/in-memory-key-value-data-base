@@ -13,12 +13,11 @@ class ProtocolParser {
     const int KEY = 1;
     const int VALUE = 2;
 
-    bool res;
-
-    // Db db;
+    bool responseStatus;
+    std::string response;
 
 public:
-    void Parse(const std::string& req);
+    void Parse(const char* req);
     
     void Tokenize();
     

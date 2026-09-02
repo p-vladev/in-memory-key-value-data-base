@@ -1,4 +1,5 @@
 #include <iostream>
+#include <thread>
 #include "./Server.hpp"
 #include "./Client.hpp"
 
@@ -10,7 +11,18 @@ class Runtime {
 
 public:
     Runtime() {
-        srv.Run();
+        std::thread serverThread([&]() {
+            srv.Run();
+
+            while (true) {
+                srv.Recieve();
+            }
+        });
+
+        serverThread.detach();
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
         cln.Run();
     }
 
@@ -19,10 +31,10 @@ public:
         cln.Run();
     }
 
-    void Execute(const std::string& msg) {
-        cln.Send(msg);
+    void Execute(const std::string& input) {
+        cln.Send(input);
 
-        srv.Recieve();
+        // srv.Recieve();
     }
 
     void Stop() {

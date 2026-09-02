@@ -3,8 +3,8 @@
 #include <sys/socket.h>
 #include <unistd.h>
 #include <unordered_map>
-#include "Server.hpp"
 #include <thread>
+#include "Server.hpp"
 
 Server::Server(const int& port) : port(port) { }
 
@@ -13,8 +13,6 @@ void Server::Run() {
 
     serverSocket = socket(AF_INET, SOCK_STREAM, 0);
 
-    clientSocket = accept(serverSocket, nullptr, nullptr);
-
     serverAddress.sin_family = AF_INET;
     serverAddress.sin_port = htons(port);
     serverAddress.sin_addr.s_addr = INADDR_ANY;
@@ -22,19 +20,27 @@ void Server::Run() {
     bind(serverSocket, (struct sockaddr*)&serverAddress, sizeof(serverAddress));
 
     listen(serverSocket, 5);
+    
+    clientSocket = accept(serverSocket, nullptr, nullptr);
+
 }
 
 void Server::Recieve () {
-    recv(clientSocket, buffer, sizeof(buffer), 0);
+    int bytesRead = recv(clientSocket, buffer, sizeof(buffer) - 1, 0);
 
-    std::cout << "Message from client: " << std::endl;
-    
-    // std::thread([&]() {
-    //     std::this_thread::sleep_for(std::chrono::milliseconds(2000));
-    //     std::cout << buffer << std::endl;
-    // }).detach(); 
+    if (bytesRead > 0) {
+        buffer[bytesRead] = '\0';
+    } else {
+        std::cout << "Connection closed or error" << std::endl;
+        return;
+    }
 
-    std::cout << buffer << std::endl;
+    pp.Parse(buffer);
+
+    pp.Tokenize();
+    pp.Validate();
+
+    std::cout << pp.Response() << std::endl;
 }
 
 void Server::Stop() {

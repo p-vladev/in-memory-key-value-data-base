@@ -3,9 +3,14 @@
 #include "ProtocolParser.hpp"
 #include "../Storage/Db.hpp"
 
-void ProtocolParser::Parse(const std::string& req) {
-    for (size_t i = 0; i < req.length(); i++) {
+void ProtocolParser::Parse(const char* req) {
+    std::cout << "PARSING: " << req << std::endl;
+
+    for (size_t i = 0; i < 40; i++) {
         buffer[i] = req[i];
+        if (req[i] == '\0') {
+            break;
+        }
     }
 }
 
@@ -39,24 +44,30 @@ void ProtocolParser::Validate() {
     if (args[COMMAND] == "SET") {
         Db::Add(args[KEY], args[VALUE]);
 
-        res = true;
+        responseStatus = true;
     }
     else if (args[COMMAND] == "GET") {
-        Db::GetValue(args[KEY]);
-
-        res = true;
+        response = Db::GetValue(args[KEY]);
+        
+        responseStatus = true;
     }
     else if (args[COMMAND] == "DEL")
     {
         Db::Delete(args[KEY]);
 
-        res = true;
+        responseStatus = true;
     }
     else {
-        res = false;
+        for (std::string arg : args) {
+            std::cout << arg << '\n';
+        }
+
+        responseStatus = false;
     }
 }
 
 std::string ProtocolParser::Response() {
-    return res ? "SUCCESS" : "ERROR";
+    if (responseStatus) { std::cout << "SUCCESS"; } else { std::cout << "ERROR"; }
+    
+    return response;
 }

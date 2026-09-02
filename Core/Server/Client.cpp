@@ -20,22 +20,10 @@ void Client::Run() {
     connect(clientSocket, (struct sockaddr*)&serverAddress, sizeof(serverAddress));
 }
 
-void Client::Send(const std::string& msg) {
-        
-    std::cout << msg;
+void Client::Send(const std::string& input) {
+    // std::cout << "CLIENT SENDING: " << msg << std::endl;
     
-    const char* message = "";
-    
-    for(size_t i = 0; i < msg.length(); i++) {
-        message += msg[i];
-    }
-
-    // std::thread([&]() {
-    //     std::this_thread::sleep_for(std::chrono::milliseconds(4000));
-    //     send(clientSocket, message, strlen(message), 0);
-    // }).detach(); 
-
-    send(clientSocket, message, strlen(message), 0);
+    send(clientSocket, input.c_str(), input.length(), 0);
 }
 
 void Client::Stop() {

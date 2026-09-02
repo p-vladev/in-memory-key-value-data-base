@@ -2,6 +2,7 @@
 #include <netinet/in.h>
 #include <sys/socket.h>
 #include <unistd.h>
+#include "../Protocol/ProtocolParser.hpp"
 
 class Server {
     int port;
@@ -13,12 +14,14 @@ class Server {
     sockaddr_in serverAddress;
 
     int clientSocket;
+
+    ProtocolParser pp;
 public:
     Server(const int& port);
 
     void Run();
 
-    void Recieve ();
+    void Recieve();
 
     void Stop();
 };
